@@ -9,14 +9,36 @@
                 x:DataType="viewModels:ExpanderViewModel"
                 Title="Expander">
 
-    <ScrollView>
-        <mct:Expander IsExpanded="{Binding IsExpanded}">
+    <VerticalStackLayout>
+        <CollectionView ItemsSource="{Binding ContentCreators}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <mct:Expander x:DataType="viewModels:ContentCreator">
+                        <mct:Expander.Header>
+                            <Label Text="{Binding Name}"/>
+                        </mct:Expander.Header>
+                        <mct:Expander.Content>
+                            <Label Text="{Binding Resource}" />
+                        </mct:Expander.Content>
+                    </mct:Expander>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Text="Multi-level expander" />
+        <mct:Expander IsExpanded="true">
             <mct:Expander.Header>
-                <Label Text="Header"/>
+                <Label Text="Level 0"/>
             </mct:Expander.Header>
             <mct:Expander.Content>
-                <Label Text="Content"/>
+                <mct:Expander Direction="Up">
+                    <mct:Expander.Header>
+                        <Label Text="Level 1"/>
+                    </mct:Expander.Header>
+                    <mct:Expander.Content>
+                        <Label Text="Level 1 Content" />
+                    </mct:Expander.Content>
+                </mct:Expander>
             </mct:Expander.Content>
         </mct:Expander>
-    </ScrollView>
+    </VerticalStackLayout>
 </pages:BasePage>
