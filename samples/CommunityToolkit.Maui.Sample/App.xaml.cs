@@ -9,11 +9,13 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		//MainPage = new AppShell();
+
+		// Open the Flyout > Views > Custom Positioning Popups
+		MainPage = new AppShell();
 
 		//MainPage = new PopupPositionPage(new ViewModels.Views.PopupPositionViewModel());
 
-		MainPage = new NavigationPage(new PopupPositionPage(new ViewModels.Views.PopupPositionViewModel()));
+		//MainPage = new NavigationPage(new PopupPositionPage(new ViewModels.Views.PopupPositionViewModel()));
 
 	}
 
