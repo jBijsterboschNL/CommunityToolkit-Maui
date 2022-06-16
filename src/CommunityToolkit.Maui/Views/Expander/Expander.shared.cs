@@ -56,4 +56,11 @@ public class Expander : View, IExpander
 		Unloaded -= OnExpanderUnloaded;
 		Handler?.DisconnectHandler();
 	}
+
+	protected override void OnBindingContextChanged()
+	{
+		base.OnBindingContextChanged();
+		((View) Header).BindingContext = BindingContext;
+		((View) Content).BindingContext = BindingContext;
+	}
 }
