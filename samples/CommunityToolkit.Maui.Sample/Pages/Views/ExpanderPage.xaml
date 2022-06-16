@@ -11,6 +11,29 @@
 
     <ScrollView>
         <VerticalStackLayout>
+
+            <Label Text="Expander in CollectionView" />
+            <CollectionView ItemsSource="{Binding ContentCreators}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <mct:Expander x:DataType="viewModels:ContentCreator">
+                            <mct:Expander.Header>
+                                <Label Text="{Binding Name}"/>
+                            </mct:Expander.Header>
+                            <mct:Expander.Content>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Resource}"/>
+                                    <Image Source="{Binding Image}"
+                                               WidthRequest="100"
+                                               HeightRequest="100"/>
+                                </VerticalStackLayout>
+                            </mct:Expander.Content>
+                        </mct:Expander>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Expander in ListView" />
             <ListView ItemsSource="{Binding ContentCreators}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -32,6 +55,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
             <Label Text="Multi-level expander" />
             <mct:Expander IsExpanded="true">
                 <mct:Expander.Header>

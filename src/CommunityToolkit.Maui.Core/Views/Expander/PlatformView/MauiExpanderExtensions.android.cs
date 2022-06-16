@@ -1,8 +1,5 @@
 ﻿using CommunityToolkit.Maui.Core.Views;
 using Microsoft.Maui.Platform;
-#if WINDOWS
-using MauiExpander = Microsoft.UI.Xaml.Controls.Expander;
-#endif
 namespace CommunityToolkit.Maui.Core.Extensions;
 
 /// <summary>
@@ -10,9 +7,20 @@ namespace CommunityToolkit.Maui.Core.Extensions;
 /// </summary>
 public static partial class MauiExpanderExtensions
 {
-#if IOS || MACCATALYST || WINDOWS
+	class HeaderClickEventListener : Java.Lang.Object, Android.Views.View.IOnClickListener
+	{
+		readonly MauiExpander expander;
 
-
+		public HeaderClickEventListener(MauiExpander expander)
+		{
+			this.expander = expander;
+		}
+		
+		public void OnClick(Android.Views.View? v)
+		{
+			expander.SetIsExpanded(!expander.IsExpanded);
+		}
+	}
 	/// <summary>
 	/// Set Header
 	/// </summary>
@@ -22,6 +30,8 @@ public static partial class MauiExpanderExtensions
 	{
 		ArgumentNullException.ThrowIfNull(context);
 		mauiExpander.Header = header.ToPlatform(context);
+		mauiExpander.Header.Clickable = true;
+		mauiExpander.Header.SetOnClickListener(new HeaderClickEventListener(mauiExpander));
 	}
 
 	/// <summary>
@@ -54,17 +64,4 @@ public static partial class MauiExpanderExtensions
 	{
 		mauiExpander.ExpandDirection = direction.ToPlatform();
 	}
-#endif
-
-#if WINDOWS
-	static Microsoft.UI.Xaml.Controls.ExpandDirection ToPlatform(this ExpandDirection direction)
-	{
-		return Enum.Parse<Microsoft.UI.Xaml.Controls.ExpandDirection>(direction.ToString());
-	}
-#else
-	static ExpandDirection ToPlatform(this ExpandDirection direction)
-	{
-		return direction;
-	}
-#endif
 }

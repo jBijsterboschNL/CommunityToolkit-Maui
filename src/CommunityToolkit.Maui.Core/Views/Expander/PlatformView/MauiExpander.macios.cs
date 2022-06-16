@@ -2,13 +2,66 @@
 
 public partial class MauiExpander : UIView
 {
-	public UIView Header { get; set; } = new();
-	public UIView Content { get; set; } = new();
-	public bool IsExpanded { get; set; }
-	public ExpandDirection ExpandDirection { get; set; }
+	private UIView? header;
+	private UIView? content;
+	bool isExpanded;
+	ExpandDirection expandDirection;
 
-	public void Initialize()
+	public UIView? Header
 	{
+		get => header;
+		set
+		{
+			header = value;
+			Draw();
+		}
+	}
+
+	public UIView? Content
+	{
+		get => content;
+		set
+		{
+			content = value;
+			Draw();
+		}
+	}
+
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	public bool IsExpanded
+	{
+		get => isExpanded;
+		set
+		{
+			isExpanded = value;
+			Draw();
+		}
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	public ExpandDirection ExpandDirection
+	{
+		get => expandDirection;
+		set
+		{
+			expandDirection = value;
+			Draw();
+		}
+	}
+
+	public void Draw()
+	{
+		if (Header is null || Content is null)
+		{
+			return;
+		}
+
 		var container = new UIStackView()
 		{
 			Axis = UILayoutConstraintAxis.Vertical
@@ -21,16 +74,16 @@ public partial class MauiExpander : UIView
 			container.AddArrangedSubview(Header);
 		}
 
-		container.AddArrangedSubview(Content);
+		if (IsExpanded)
+		{
+			container.AddArrangedSubview(Content);
+		}
+
 		if (ExpandDirection == ExpandDirection.Up)
 		{
 			container.AddArrangedSubview(Header);
 
 		}
 		AddSubview(container);
-	}
-
-	public void CleanUp()
-	{
 	}
 }

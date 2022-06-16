@@ -52,14 +52,6 @@ public partial class ExpanderHandler
 #if ANDROID || IOS || MACCATALYST || WINDOWS
 public partial class ExpanderHandler : ViewHandler<IExpander, MauiExpander>
 {
-	protected override void DisconnectHandler(MauiExpander platformView)
-	{
-#if !WINDOWS
-		platformView.CleanUp();
-#endif
-		base.DisconnectHandler(platformView);
-	}
-
 	/// <inheritdoc />
 #if ANDROID
 	protected override MauiExpander CreatePlatformView() => new(Context);
@@ -67,21 +59,41 @@ public partial class ExpanderHandler : ViewHandler<IExpander, MauiExpander>
 	protected override MauiExpander CreatePlatformView() => new();
 #endif
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="handler"></param>
+	/// <param name="view"></param>
 	public static void MapHeader(ExpanderHandler handler, IExpander view)
 	{
 		handler.PlatformView.SetHeader(view.Header, handler.MauiContext);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="handler"></param>
+	/// <param name="view"></param>
 	public static void MapContent(ExpanderHandler handler, IExpander view)
 	{
 		handler.PlatformView.SetContent(view.Content, handler.MauiContext);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="handler"></param>
+	/// <param name="view"></param>
 	public static void MapIsExpanded(ExpanderHandler handler, IExpander view)
 	{
 		handler.PlatformView.SetIsExpanded(view.IsExpanded);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="handler"></param>
+	/// <param name="view"></param>
 	public static void MapDirection(ExpanderHandler handler, IExpander view)
 	{
 		handler.PlatformView.SetDirection(view.Direction);
