@@ -19,7 +19,6 @@ public partial class MauiExpander : LinearLayout
 	/// </summary>
 	public MauiExpander(Context context) : base(context)
 	{
-		Orientation = Orientation.Vertical;
 	}
 
 	/// <summary>
@@ -57,7 +56,7 @@ public partial class MauiExpander : LinearLayout
 		set
 		{
 			isExpanded = value;
-			Draw();
+			UpdateContentVisibility(value);
 		}
 	}
 
@@ -80,46 +79,44 @@ public partial class MauiExpander : LinearLayout
 		{
 			return;
 		}
-		
-		RemoveAllViews();
 
+		Orientation = Orientation.Vertical;
+		RemoveAllViews();
+		
+		ConfigureHeader();
 		if (ExpandDirection == ExpandDirection.Down)
 		{
-			AddView(GetHeader());
+			AddView(Header);
 		}
 
-		if (IsExpanded)
-		{
-			AddView(Content);
-		}
+		AddView(Content);
+		UpdateContentVisibility(IsExpanded);
 
 		if (ExpandDirection == ExpandDirection.Up)
 		{
-			AddView(GetHeader());
+			AddView(Header);
 		}
 	}
 
-	LinearLayout GetHeader()
+	void UpdateContentVisibility(bool isVisible)
 	{
-		var headerLayout = new LinearLayout(Context);
-		headerLayout.Orientation = Orientation.Horizontal;
-		headerLayout.Clickable = true;
-		headerLayout.SetOnClickListener(new HeaderClickEventListener(this));
-
-		if (Header is not null)
+		if (Content is not null)
 		{
-			headerLayout.AddView(Header);			
+			Content.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
 		}
-		
-		headerLayout.AddView(new TextView(Context)
-		{
-			Text = IsExpanded ? 
-				ExpandDirection == ExpandDirection.Up ? "V":"^" :
-				ExpandDirection == ExpandDirection.Up ? "^":"V"
-		});
-		return headerLayout;
 	}
 	
+	void ConfigureHeader()
+	{
+		if (Header is null)
+		{
+			return;
+		}
+
+		Header.Clickable = true;
+		Header.SetOnClickListener(new HeaderClickEventListener(this));
+	}
+
 	class HeaderClickEventListener : Java.Lang.Object, IOnClickListener
 	{
 		readonly MauiExpander expander;
@@ -128,7 +125,7 @@ public partial class MauiExpander : LinearLayout
 		{
 			this.expander = expander;
 		}
-		
+
 		public void OnClick(Android.Views.View? v)
 		{
 			expander.SetIsExpanded(!expander.IsExpanded);

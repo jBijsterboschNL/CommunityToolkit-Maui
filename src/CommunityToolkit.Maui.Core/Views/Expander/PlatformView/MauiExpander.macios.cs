@@ -36,10 +36,7 @@ public partial class MauiExpander : UIStackView
 		set
 		{
 			isExpanded = value;
-			if (Content is not null)
-			{
-				Content.Hidden = !IsExpanded;
-			}
+			UpdateContentVisibility(value);
 		}
 	}
 
@@ -76,7 +73,7 @@ public partial class MauiExpander : UIStackView
 		}
 
 		AddArrangedSubview(Content);
-		Content.Hidden = !IsExpanded;
+		UpdateContentVisibility(IsExpanded);
 		Content.ClipsToBounds = true;
 
 		if (ExpandDirection == ExpandDirection.Up)
@@ -87,7 +84,6 @@ public partial class MauiExpander : UIStackView
 
 	void ConfigureHeader()
 	{
-
 		if (Header is null)
 		{
 			return;
@@ -99,5 +95,13 @@ public partial class MauiExpander : UIStackView
 		{
 			expanderGesture
 		};
+	}
+
+	void UpdateContentVisibility(bool isVisible)
+	{
+		if (Content is not null)
+		{
+			Content.Hidden = !isVisible;
+		}
 	}
 }
