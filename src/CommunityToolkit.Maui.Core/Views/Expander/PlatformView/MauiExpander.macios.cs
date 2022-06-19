@@ -1,9 +1,9 @@
 ﻿namespace CommunityToolkit.Maui.Core.Views;
 
-public partial class MauiExpander : UIView
+public partial class MauiExpander : UIStackView
 {
-	private UIView? header;
-	private UIView? content;
+	UIView? header;
+	UIView? content;
 	bool isExpanded;
 	ExpandDirection expandDirection;
 
@@ -26,8 +26,6 @@ public partial class MauiExpander : UIView
 			Draw();
 		}
 	}
-
-
 
 	/// <summary>
 	/// 
@@ -55,35 +53,50 @@ public partial class MauiExpander : UIView
 		}
 	}
 
-	public void Draw()
+	void Draw()
 	{
 		if (Header is null || Content is null)
 		{
 			return;
 		}
 
-		var container = new UIStackView()
+		Axis = UILayoutConstraintAxis.Vertical;
+		foreach (var subView in ArrangedSubviews)
 		{
-			Axis = UILayoutConstraintAxis.Vertical
-		};
-
-		Content.ClipsToBounds = true;
-
+			//RemoveArrangedSubview(subView);
+		}
+		
+		ConfigureHeader();
 		if (ExpandDirection == ExpandDirection.Down)
 		{
-			container.AddArrangedSubview(Header);
+			AddArrangedSubview(Header);
 		}
 
 		if (IsExpanded)
 		{
-			container.AddArrangedSubview(Content);
+			Content.ClipsToBounds = true;
+			AddArrangedSubview(Content);
 		}
 
 		if (ExpandDirection == ExpandDirection.Up)
 		{
-			container.AddArrangedSubview(Header);
-
+			AddArrangedSubview(Header);
 		}
-		AddSubview(container);
+	}
+	
+	void ConfigureHeader()
+	{
+		
+	if (Header is null)
+    		{
+    			return;
+    		}
+		
+		var expanderGesture = new UITapGestureRecognizer();
+		expanderGesture.AddTarget(() => IsExpanded = !IsExpanded);
+		Header.GestureRecognizers = new UIGestureRecognizer[]
+		{
+			expanderGesture
+		};
 	}
 }

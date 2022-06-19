@@ -10,7 +10,7 @@ namespace CommunityToolkit.Maui.Core.Extensions;
 /// </summary>
 public static partial class MauiExpanderExtensions
 {
-#if IOS || MACCATALYST || WINDOWS
+#if ANDROID || IOS || MACCATALYST || WINDOWS
 
 
 	/// <summary>

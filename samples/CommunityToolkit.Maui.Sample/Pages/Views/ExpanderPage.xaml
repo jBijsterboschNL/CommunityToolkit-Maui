@@ -10,29 +10,24 @@
                 Title="Expander">
 
     <ScrollView>
-        <VerticalStackLayout>
-
-            <Label Text="Expander in CollectionView" />
-            <CollectionView ItemsSource="{Binding ContentCreators}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <mct:Expander x:DataType="viewModels:ContentCreator">
-                            <mct:Expander.Header>
-                                <Label Text="{Binding Name}"/>
-                            </mct:Expander.Header>
-                            <mct:Expander.Content>
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding Resource}"/>
-                                    <Image Source="{Binding Image}"
-                                               WidthRequest="100"
-                                               HeightRequest="100"/>
-                                </VerticalStackLayout>
-                            </mct:Expander.Content>
-                        </mct:Expander>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
+        <VerticalStackLayout Spacing="10">
+            <Label Text="Multi-level expander" />
+            <mct:Expander IsExpanded="true">
+                <mct:Expander.Header>
+                    <Label Text="Level 0"/>
+                </mct:Expander.Header>
+                <mct:Expander.Content>
+                    <mct:Expander Direction="Up">
+                        <mct:Expander.Header>
+                            <Label Text="Level 1"/>
+                        </mct:Expander.Header>
+                        <mct:Expander.Content>
+                            <Label Text="Level 1 Content" />
+                        </mct:Expander.Content>
+                    </mct:Expander>
+                </mct:Expander.Content>
+            </mct:Expander>
+            
             <Label Text="Expander in ListView" />
             <ListView ItemsSource="{Binding ContentCreators}">
                 <ListView.ItemTemplate>
@@ -56,22 +51,26 @@
                 </ListView.ItemTemplate>
             </ListView>
             
-            <Label Text="Multi-level expander" />
-            <mct:Expander IsExpanded="true">
-                <mct:Expander.Header>
-                    <Label Text="Level 0"/>
-                </mct:Expander.Header>
-                <mct:Expander.Content>
-                    <mct:Expander Direction="Up">
-                        <mct:Expander.Header>
-                            <Label Text="Level 1"/>
-                        </mct:Expander.Header>
-                        <mct:Expander.Content>
-                            <Label Text="Level 1 Content" />
-                        </mct:Expander.Content>
-                    </mct:Expander>
-                </mct:Expander.Content>
-            </mct:Expander>
+            <Label Text="Expander in CollectionView" />
+            <CollectionView ItemsSource="{Binding ContentCreators}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <mct:Expander x:DataType="viewModels:ContentCreator">
+                            <mct:Expander.Header>
+                                <Label Text="{Binding Name}"/>
+                            </mct:Expander.Header>
+                            <mct:Expander.Content>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Resource}"/>
+                                    <Image Source="{Binding Image}"
+                                               WidthRequest="100"
+                                               HeightRequest="100"/>
+                                </VerticalStackLayout>
+                            </mct:Expander.Content>
+                        </mct:Expander>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 </pages:BasePage>

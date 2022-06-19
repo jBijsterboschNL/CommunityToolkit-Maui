@@ -1,6 +1,6 @@
 ﻿using Android.Content;
 using Android.Views;
-using AndroidX.ConstraintLayout.Widget;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace CommunityToolkit.Maui.Core.Views;
 
@@ -15,7 +15,7 @@ public partial class MauiExpander : LinearLayout
 	ExpandDirection expandDirection;
 
 	/// <summary>
-	/// Initialize a new instance of <see cref="MauiDrawingView" />.
+	/// Initialize a new instance of <see cref="MauiExpander" />.
 	/// </summary>
 	public MauiExpander(Context context) : base(context)
 	{
@@ -85,7 +85,7 @@ public partial class MauiExpander : LinearLayout
 
 		if (ExpandDirection == ExpandDirection.Down)
 		{
-			AddView(Header);
+			AddView(GetHeader());
 		}
 
 		if (IsExpanded)
@@ -95,7 +95,43 @@ public partial class MauiExpander : LinearLayout
 
 		if (ExpandDirection == ExpandDirection.Up)
 		{
-			AddView(Header);
+			AddView(GetHeader());
+		}
+	}
+
+	LinearLayout GetHeader()
+	{
+		var headerLayout = new LinearLayout(Context);
+		headerLayout.Orientation = Orientation.Horizontal;
+		headerLayout.Clickable = true;
+		headerLayout.SetOnClickListener(new HeaderClickEventListener(this));
+
+		if (Header is not null)
+		{
+			headerLayout.AddView(Header);			
+		}
+		
+		headerLayout.AddView(new TextView(Context)
+		{
+			Text = IsExpanded ? 
+				ExpandDirection == ExpandDirection.Up ? "V":"^" :
+				ExpandDirection == ExpandDirection.Up ? "^":"V"
+		});
+		return headerLayout;
+	}
+	
+	class HeaderClickEventListener : Java.Lang.Object, IOnClickListener
+	{
+		readonly MauiExpander expander;
+
+		public HeaderClickEventListener(MauiExpander expander)
+		{
+			this.expander = expander;
+		}
+		
+		public void OnClick(Android.Views.View? v)
+		{
+			expander.SetIsExpanded(!expander.IsExpanded);
 		}
 	}
 }
