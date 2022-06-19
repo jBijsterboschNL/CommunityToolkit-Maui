@@ -36,7 +36,10 @@ public partial class MauiExpander : UIStackView
 		set
 		{
 			isExpanded = value;
-			Draw();
+			if (Content is not null)
+			{
+				Content.Hidden = !IsExpanded;
+			}
 		}
 	}
 
@@ -63,35 +66,33 @@ public partial class MauiExpander : UIStackView
 		Axis = UILayoutConstraintAxis.Vertical;
 		foreach (var subView in ArrangedSubviews)
 		{
-			//RemoveArrangedSubview(subView);
+			RemoveArrangedSubview(subView);
 		}
-		
+
 		ConfigureHeader();
 		if (ExpandDirection == ExpandDirection.Down)
 		{
 			AddArrangedSubview(Header);
 		}
 
-		if (IsExpanded)
-		{
-			Content.ClipsToBounds = true;
-			AddArrangedSubview(Content);
-		}
+		AddArrangedSubview(Content);
+		Content.Hidden = !IsExpanded;
+		Content.ClipsToBounds = true;
 
 		if (ExpandDirection == ExpandDirection.Up)
 		{
 			AddArrangedSubview(Header);
 		}
 	}
-	
+
 	void ConfigureHeader()
 	{
-		
-	if (Header is null)
-    		{
-    			return;
-    		}
-		
+
+		if (Header is null)
+		{
+			return;
+		}
+
 		var expanderGesture = new UITapGestureRecognizer();
 		expanderGesture.AddTarget(() => IsExpanded = !IsExpanded);
 		Header.GestureRecognizers = new UIGestureRecognizer[]
